@@ -1,6 +1,7 @@
 package T1;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -18,9 +19,10 @@ public class Main {
 
         Transicao t1 = new Transicao();
         Scanner regras = new Scanner(System.in);
-        System.out.println("Informe o endereço das regras: ");
-        String caminho = regras.nextLine();
+        //System.out.println("Informe o endereço das regras: ");
+        String caminho = "rules.afd";
         Integer EstadoInicial = 0;
+        ArrayList<Integer> ef = new ArrayList();
 
         try{
             FileReader arquivo = new FileReader(caminho);
@@ -32,6 +34,17 @@ public class Main {
             System.out.println("estado inicial " + EstadoInicial);
             String EstadoFinal = lerArquivo.readLine();
             System.out.println("Estado final " + EstadoFinal);
+            ArrayList<Integer> EstadoFinalArray = new ArrayList();
+
+            for(char Lista : EstadoFinal.toCharArray()){
+                if (Lista != ' ' ) {
+                  EstadoFinalArray.add(Character.getNumericValue(Lista));
+                }
+            }
+
+
+            ef = EstadoFinalArray;
+
             while (EstadoFinal != null) {
                 EstadoFinal = lerArquivo.readLine();
                 System.out.println("sequência " + EstadoFinal);
@@ -52,13 +65,11 @@ public class Main {
         }
         System.out.println();
 
-        Set<Integer> S1 = new HashSet<>(Arrays.asList(0));
-
-        AFD a1 = new AFD(t1,EstadoInicial,S1);
+        AFD a1 = new AFD(t1,EstadoInicial,ef);
 
         Scanner imput = new Scanner(System.in);
-        System.out.println("Informe o endereço do imput: ");
-        String endereco = imput.nextLine();
+        //System.out.println("Informe o endereço do imput: ");
+        String endereco = "imput.txt";
 
         try{
             FileReader arquivo = new FileReader(endereco);
@@ -71,7 +82,7 @@ public class Main {
                 if (palavra != null) {
                     teste = a1.validacao(palavra);
                 }
-                if(teste){
+                if(teste && palavra != null){
                     System.out.println(palavra + " Palavra Aceita");
                 }
                 else{
